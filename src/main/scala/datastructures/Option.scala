@@ -34,10 +34,29 @@ case class Some[+A](get: A) extends Option[A]
 
 case object None extends Option[Nothing]
 
-object Main extends App {
+object Option {
 
-  // Exercise 4.2
-  def variance(xs: Seq[Double]): Option[Double] = ??? // TODO
+  // Exercise 4.4
+  def sequence[A](list: List[Option[A]]): Option[List[A]] =
+    Some(List.flatMap(list) { case Some(value) => List(value) })
+
+  // Exercise 4.4 – 2nd try
+  def sequence[A](list: List[Option[A]]): Option[List[A]] = {
+    @scala.annotation.tailrec
+    def traverse(as: List[Option[A]], acc: List[A]): Option[List[A]] = as match {
+      case Nil => None
+      case Cons(head, Nil) => head match {
+        case None => None;
+        case Some(value) => Some(List.append(acc, List(value)))
+      }
+      case Cons(head, tail) => head match {
+        case None => None;
+        case Some(value) => traverse(tail, List.append(acc, List(value)))
+      }
+    }
+
+    traverse(list, List())
+  }
 
   // Exercise 4.3
   def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = a match {
@@ -48,7 +67,14 @@ object Main extends App {
     }
   }
 
-  def sequence[A](list: List[Option[A]]): Option[List[A]] =
-    Some(List.flatMap(list) { case Some(value) => List(value) })
+  // Exercise 4.5
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = sequence(list = (List map a) (f(_)))
+
+}
+
+object Main extends App {
+
+  // Exercise 4.2
+  def variance(xs: Seq[Double]): Option[Double] = ??? // TODO
 
 }
