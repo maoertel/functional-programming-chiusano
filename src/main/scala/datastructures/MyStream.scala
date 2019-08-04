@@ -67,9 +67,9 @@ sealed trait MyStream[+A] {
   // TODO
 
   /** Exercise 5.7 */
-  def map[B](f: A => B): MyStream[B] = foldRight(Empty)((a, b) => Const(() => f(a), () => b.map(f))
+  def map[B](f: A => B): MyStream[B] = foldRight(empty)((a, b) => cons(f(a), b.map(f)))
 
-  def filter(p: A => Boolean): MyStream[A] = foldRight(Empty) { (a, b) =>
+  def filter(p: A => Boolean): MyStream[A] = foldRight(empty) { (a, b) =>
     if (p(a)) b.filter(p)
     else cons(a, b.filter(p))
   }
@@ -78,7 +78,7 @@ sealed trait MyStream[+A] {
 
   def flatMap[B](f: A => MyStream[B]): MyStream[B] = foldRight(empty)((a, b) => cons(f(a), b.flatMap(f)))
 
-  //  def find(p: A => Boolean): Option[A] = filter(p).headOption
+  //  def find(p: A => Boolean): Option[A] = filter(p).headOption // TODO implementation of headOption missing
 
   def ones: MyStream[Int] = MyStream.cons(1, ones)
 
@@ -110,14 +110,12 @@ object MyStream {
   }
 
   /** Exercise 5.11 */
-  def unfold[A, S](z: S)(f: S => Option[(A, S)]): MyStream[A] = {
-    def inner(next: S): MyStream[A] = f(next) match {
-      case Some(get) => cons(get._1, inner(get._2))
-      case None => Empty
-    }
-
-    inner(z)
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): MyStream[A] = f(z) match {
+    case Some(get) => cons(get._1, unfold(get._2)(f))
+    case None => Empty
   }
+
+  /** TODO Exercises 5.12 to 5.16 are missing */
 
   def cons[A](hd: => A, tl: => MyStream[A]): MyStream[A] = {
     lazy val head = hd
