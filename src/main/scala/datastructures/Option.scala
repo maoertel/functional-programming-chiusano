@@ -72,7 +72,7 @@ object Option {
 
 }
 
-object Main extends App {
+object Mainsy {
 
   // Exercise 4.2
   def variance(xs: Seq[Double]): Option[Double] = ??? // TODO
