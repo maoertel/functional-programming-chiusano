@@ -96,7 +96,7 @@ object MyStream {
   /** Exercise 5.9 */
   def from(n: Int): MyStream[Int] = {
     def traverse(count: Int): MyStream[Int] =
-      if (count == n) Empty
+      if (count == n) empty
       else cons(count, traverse(count + 1))
 
     traverse(1)
@@ -111,7 +111,7 @@ object MyStream {
 
   /** Exercise 5.11 */
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): MyStream[A] = f(z) match {
-    case Some(get) => cons(get._1, unfold(get._2)(f))
+    case Some((a, s)) => cons(a, unfold(s)(f))
     case None => Empty
   }
 
