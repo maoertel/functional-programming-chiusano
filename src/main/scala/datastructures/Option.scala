@@ -37,25 +37,25 @@ case object None extends Option[Nothing]
 object Option {
 
   // Exercise 4.4
-  def sequence[A](list: List[Option[A]]): Option[List[A]] =
-    Some(List.flatMap(list) { case Some(value) => List(value) })
+  //  def sequence[A](list: List[Option[A]]): Option[List[A]] =
+  //    Some(List.flatMap(list) { case Some(value) => List(value) })
 
   // Exercise 4.4 – 2nd try
-  def sequence[A](list: List[Option[A]]): Option[List[A]] = {
+  def sequence[A](list: MyList[Option[A]]): Option[MyList[A]] = {
     @scala.annotation.tailrec
-    def traverse(as: List[Option[A]], acc: List[A]): Option[List[A]] = as match {
+    def traverse(as: MyList[Option[A]], acc: MyList[A]): Option[MyList[A]] = as match {
       case Nil => None
       case Cons(head, Nil) => head match {
         case None => None;
-        case Some(value) => Some(List.append(acc, List(value)))
+        case Some(value) => Some(MyList.append(acc, MyList(value)))
       }
       case Cons(head, tail) => head match {
         case None => None;
-        case Some(value) => traverse(tail, List.append(acc, List(value)))
+        case Some(value) => traverse(tail, MyList.append(acc, MyList(value)))
       }
     }
 
-    traverse(list, List())
+    traverse(list, MyList())
   }
 
   // Exercise 4.3
@@ -68,7 +68,7 @@ object Option {
   }
 
   // Exercise 4.5
-  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = sequence(list = (List map a) (f(_)))
+  def traverse[A, B](a: MyList[A])(f: A => Option[B]): Option[MyList[B]] = sequence(list = (MyList map a) (f(_)))
 
 }
 
