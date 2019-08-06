@@ -45,14 +45,14 @@ object Test {
   val booleanAnd: Monoid[Boolean] = new Monoid[Boolean] {
     override def op(a1: Boolean, a2: Boolean): Boolean = a1 && a2
 
-    override def zero: Boolean = // TODO
+    override def zero: Boolean = ??? // TODO
   }
 
   /** Exercise 10.2 */
   def optionMonoid[A]: Monoid[Option[A]] = new Monoid[Option[A]] {
     override def op(a1: Option[A], a2: Option[A]): Option[A] = a1 match {
       case Some(get1) => a2 match {
-        case Some(get2) => Some(get1 + get2)
+        case Some(get2) => ??? // TODO Some(get1 + get2)
         case None => None
       }
       case None => None
