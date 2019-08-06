@@ -86,7 +86,7 @@ object MyList {
   // see what happens when you pass Nil and Cons...
 
   // Exercise 3.9
-  //  def length[A](as: List[A]): Int = foldRight(as, 0) {_ + 1}
+  def length[A](as: MyList[A]): Int = foldRight(as, 0)((_, b) => b + 1)
 
   // Exercise 3.10
   def foldLeft[A, B](as: MyList[A], z: B)(f: (B, A) => B): B = {

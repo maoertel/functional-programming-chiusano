@@ -46,7 +46,7 @@ sealed trait MyStream[+A] {
   }
 
   def exists(p: A => Boolean): Boolean = this match {
-    case Const(h, t) => p(h) || t().exists(p)
+    case Const(h, t) => p(h()) || t().exists(p)
     case _ => false
   }
 
