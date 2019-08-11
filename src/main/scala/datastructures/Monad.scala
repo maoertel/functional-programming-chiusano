@@ -66,7 +66,7 @@ trait Monad[F[_]] {
   }
 
   /** Exercise 11.12 */
-  def join[A](mma: F[F[A]]): F[A] = ??? // flatMap(mma)(a => flatMap(a)(_))
+  def join[A](mma: F[F[A]]): F[A] = flatMap(mma)(fa => fa)
 
 }
 

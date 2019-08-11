@@ -1,13 +1,18 @@
 package datastructures
 
 /**
- * All Applicatives are functors, that is why the extension
+ * All Applicatives are functors, that is why the extension. And all Monads are applicative Functors.
  **/
 trait Applicative[F[_]] extends Functor[F] {
 
+  /** Exercise 12.2 – apply in terms of map2 & unit */
+  def apply[A, B](fab: F[A => B])(fa: F[A]): F[B] = ???
+
   // primitive combinators
+  /** let us add a function within F */
   def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C]
 
+  /** adds an layer of F */
   def unit[A](a: => A): F[A]
 
   // derived from functor
@@ -28,3 +33,30 @@ trait Applicative[F[_]] extends Functor[F] {
   def product[A, B](fa: F[A], fb: F[A]): F[(A, B)] = ???
 
 }
+
+/**
+ * A minimal implementation of Monad must implement unit and override either flatMap or join & map
+ **/
+private trait Monad2[F[_]] extends Applicative[F] {
+
+  def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B] = join(map(fa)(f))
+
+  /** removes an layer of F */
+  def join[A](ffa: F[F[A]]): F[A] = flatMap(ffa)(fa => fa)
+
+  override def map[A, B](fa: F[A])(f: A => B): F[B] = flatMap(fa)(a => unit(f(a)))
+
+  def map2[A, B, C](fa: F[A], fb: F[B])(f: (A, B) => C): F[C] = flatMap(fa)(a => map(fb)(b => f(a, b)))
+
+}
+
+/**
+ * Definition: effects
+ *
+ * - informally type constructors like Option, List, a.s.o. are called effects. These types are called effects because
+ * they augment ordinary values with extra capabilities.
+ *
+ * Definition: monadic or applicative effects
+ *
+ * - to mean types with an associated Monad or Applicative instance
+ */
