@@ -1,13 +1,14 @@
 package datastructures
 
+import scala.language.higherKinds
+
 /**
  * A monads minimal sets are are:
  *  - unit & flatMap
  *  - unit & compose
  *  - unit, map, join
  *
- * So a monad satisfies the identity laws (left/right unit) and the associativity law and implements one of the minimal
- * sets.
+ * A monad satisfies the laws of identity (left/right unit) and associativity and implements one of the minimal sets.
  *
  * I. Associativity law:
  *
@@ -15,10 +16,20 @@ package datastructures
  *
  * II. Identity laws: left unit & right unit law
  *
+ * Right unit law
+ *
+ * - either: compose(f, unit) == f
+ *
+ * - or: flatMap(x)(unit) == x
+ *
+ * Left unit law
+ *
+ * - either: compose(unit,f) == f
+ *
+ * - or: flatMap(unit(y))(f) == f(y)
  *
  *
- *
- * Kleisli arrows are functions in the form of: A => F[A]
+ * --> Kleisli arrows are functions in the form of: A => F[A]
  **/
 trait Monad[F[_]] {
 
@@ -50,6 +61,9 @@ trait Monad[F[_]] {
     val afterF: F[B] = flatMap(unit(m))(f(_))
     flatMap(afterF)(g(_))
   }
+
+  /** Exercise 11.12 */
+  def join[A](mma: F[F[A]]): F[A] = ??? // flatMap(mma)(a => flatMap(a)(_))
 
 }
 
