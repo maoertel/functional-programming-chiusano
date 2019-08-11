@@ -44,6 +44,9 @@ trait Monad[F[_]] {
   /** Exercise 11.3 */
   def sequence[A](lma: List[F[A]]): F[List[A]] = unit(lma.iterator.map(a => map(a)(_)))
 
+  /** sequence in terms of traverse */
+  def sequence2[A](lfa: List[F[A]]): F[List[A]] = traverse(lfa)(fa => fa)
+
   /** Exercise 11.3 */
   def traverse[A, B](la: List[A])(f: A => F[B]): F[List[B]] = sequence(la.iterator.map(a => f(a)).toList)
 
