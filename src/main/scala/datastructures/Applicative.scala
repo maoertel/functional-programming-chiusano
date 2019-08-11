@@ -1,7 +1,17 @@
 package datastructures
 
 /**
- * All Applicatives are functors, that is why the extension. And all Monads are applicative Functors.
+ * All Applicatives are functors, that is why the extension of Functor[F].
+ * So all Monads are applicative Functors.
+ *
+ * Laws:
+ * I. Left & right identity laws from Functor
+ * - map(v)(id) == v
+ * - map(map(v)(g))(f) == map(v)(f compose g)
+ *
+ * II. Associativity law
+ * - product(product(fa, fb), fc) == map(fa, product(fb, fc)))(assoc)
+ *
  **/
 trait Applicative[F[_]] extends Functor[F] {
 
@@ -30,8 +40,11 @@ trait Applicative[F[_]] extends Functor[F] {
 
   def replicateM[A](n: Int, fa: F[A]): F[List[A]] = ???
 
-  def product[A, B](fa: F[A], fb: F[A]): F[(A, B)] = ???
+  def product[A, B](fa: F[A], fb: F[B]): F[(A, B)] = map2(fa, fb)((_, _))
 
+  def assoc[A, B, C](p: (A, (B, C))): ((A, B), C) = p match {
+    case (a, (b, c)) => ((a, b), c)
+  }
 }
 
 /**
