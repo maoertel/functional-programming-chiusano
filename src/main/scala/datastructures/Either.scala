@@ -24,6 +24,7 @@ sealed trait Either[+E, +A] {
       case Left(value) => Left(value)
       case Right(valueB) => Right(f(valueA, valueB))
     }
+
   }
 
 }

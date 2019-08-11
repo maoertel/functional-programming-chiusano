@@ -1,5 +1,14 @@
 package datastructures
 
+/**
+ * Monoid is a type together with the monoid operations and the set following of laws.
+ *
+ * I. Monoid has a associative binary operation that takes two values of A and combines them into one:
+ * --> op(op(x, y), z) == op(x, op(y, z))
+ *
+ * II. Monoid has a value zero (identity element), so that:
+ * --> op(x, zero) == x == op(zero, x)
+ */
 trait Monoid[A] {
 
   def op(a1: A, a2: A): A
@@ -8,6 +17,7 @@ trait Monoid[A] {
 
 }
 
+/** Definition: an Endofunction is a function that have  the same argument and return type */
 
 object Test {
 

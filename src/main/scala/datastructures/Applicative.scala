@@ -45,6 +45,7 @@ trait Applicative[F[_]] extends Functor[F] {
   def assoc[A, B, C](p: (A, (B, C))): ((A, B), C) = p match {
     case (a, (b, c)) => ((a, b), c)
   }
+
 }
 
 /**
